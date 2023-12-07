@@ -5,11 +5,11 @@ import './aboutDeparture.css';
 export const AboutDeparture = () => {
   const { state } = useLocation();
   const from = state?.from || '', to = state?.to || '', name = state?.name || '';
-  const phone = state?.phone || '', email = state?.email || '';
+  const phone = state?.phone || '', email = state?.email || '', admin = state?.admin || false;
 
   return (
     <>
-      <Header />
+      <Header isUser={admin} />
       <section className='admin'>
         <div className="driver__info">
           <span>{name}</span>

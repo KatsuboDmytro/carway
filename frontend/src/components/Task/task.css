@@ -1,0 +1,12 @@
+.choose span:first-child {
+  margin-right: 20px;
+}
+
+.task {
+  display: flex;
+  justify-content: space-between;
+}
+
+.task div:first-child {
+  width: 90%;
+}

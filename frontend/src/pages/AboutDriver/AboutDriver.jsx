@@ -5,11 +5,11 @@ import './aboutDriver.css'
 export const AboutDriver = () => {
   const { state } = useLocation();
   const busy = state?.busy || false, name = state?.name || '';
-  const phone = state?.phone || '', email = state?.email || '';
+  const phone = state?.phone || '', email = state?.email || '', admin = state?.admin || false;
 
   return (
     <>
-      <Header />
+      <Header isUser={admin} />
       <section className='admin'>
         <div className="driver__info">
           <span>{name}</span>
@@ -23,21 +23,21 @@ export const AboutDriver = () => {
           <>
             <h2>Водій за кермом на маршруті</h2>
             <div className="admin__cards">
-              <Departure id={8} name={name} phone={phone} email={email} from={'Негроні'} to={'Тхемале'}/>
+              <Departure admin={admin} id={8} name={name} phone={phone} email={email} from={'Негроні'} to={'Тхемале'}/>
             </div>
 
             <h2>Успішні перевізки</h2>
             <div className="admin__cards">
-              <Departure id={4} name={name} phone={phone} email={email} from={'Київ'} to={'Тбілісі'}/>
-              <Departure id={4} name={name} phone={phone} email={email} from={'Київ'} to={'Тбілісі'}/>
+              <Departure admin={admin} id={4} name={name} phone={phone} email={email} from={'Київ'} to={'Тбілісі'}/>
+              <Departure admin={admin} id={4} name={name} phone={phone} email={email} from={'Київ'} to={'Тбілісі'}/>
             </div>
           </>
           :
           <>
             <h2>Успішні перевізки</h2>
             <div className="admin__cards">
-              <Departure id={2} name={name} phone={phone} email={email} from={'Київ'} to={'Черкаси'}/>
-              <Departure id={2} name={name} phone={phone} email={email} from={'Біла-Церква'} to={'Буковель'}/>
+              <Departure admin={admin} id={2} name={name} phone={phone} email={email} from={'Київ'} to={'Черкаси'}/>
+              <Departure admin={admin} id={2} name={name} phone={phone} email={email} from={'Біла-Церква'} to={'Буковель'}/>
             </div>
             <h2>Запропонувати роботу?</h2>
             <form action="submit" className='inputs'>

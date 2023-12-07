@@ -2,13 +2,13 @@ import { LogOut, Logo, Settings } from '../../assets/assets'
 import { Find } from '../index'
 import './header.css';
 
-export const Header = () => {
+export const Header = ({ isUser }) => {
   return (
     <header className='header'>
       <Logo />
-      <Find />
+      {isUser ? <Find /> : <></>}
       <div className='header__functions'>
-        <Settings />
+        {isUser ? <Settings /> : <></>}
         <LogOut />
       </div>
     </header>
