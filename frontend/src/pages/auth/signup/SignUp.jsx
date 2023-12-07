@@ -21,7 +21,7 @@ export const SignUp = () => {
           </div>
 
           <div className="field button-field">
-            <button>Signup</button>
+          <Link to="/home"><button>Signup</button></Link>
           </div>
         </form>
 

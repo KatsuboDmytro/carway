@@ -1,0 +1,11 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 30px 100px;
+}
+
+.header__functions {
+  display: flex;
+  gap: 30px;
+}

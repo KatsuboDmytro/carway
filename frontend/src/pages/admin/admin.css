@@ -1,0 +1,8 @@
+.admin {
+  margin: 70px 100px;
+}
+.admin__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

@@ -1,7 +1,14 @@
-import React from 'react'
+import { useState } from 'react'
+import { Header } from '../../components/index'
+import { Admin, User } from '../index';
 
 export const Home = () => {
+  const [admin, setAdmin] = useState(true);
+
   return (
-    <div>Home</div>
+    <>
+      <Header />
+      { admin ? <Admin /> : <User /> }
+    </>
   )
 }

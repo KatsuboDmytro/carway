@@ -1,0 +1,36 @@
+.driver__departure {
+  border-radius: 15px;
+  background: #D9D9D9;
+  padding: 15px;
+}
+
+.driver__departure span {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+table {
+  width: 100%;
+  border-radius: 15px;
+  border-collapse: collapse;
+  margin: auto;
+}
+
+thead {
+  background-color: #f9f9f9; /* Колір сірого рядка */
+  color: black;
+}
+
+tr:nth-child(odd) {
+  background-color: #fff; /* Колір білого рядка */
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9; /* Колір сірого рядка */
+}
+
+th, td, table {
+  padding: 10px;
+  border: none; /* Границі для клітинок */
+  text-align: center;
+}
