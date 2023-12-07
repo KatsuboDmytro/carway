@@ -5,8 +5,9 @@ import { Admin } from "./admin/Admin";
 import { User } from "./user/User";
 import { AboutDriver } from "./AboutDriver/AboutDriver";
 import { AboutDeparture } from "./AboutDeparture/AboutDeparture";
+import { Settings } from "./Settings/Settings";
 
 export {
-  SignUp, Login,
+  SignUp, Login, Settings,
   Home, Admin, User, AboutDriver, AboutDeparture,
 }

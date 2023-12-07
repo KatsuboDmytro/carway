@@ -1,5 +1,5 @@
 import { HashRouter as Router, Routes, Route } from 'react-router-dom';
-import { Login, SignUp, Home, AboutDriver, AboutDeparture } from "./pages/index";
+import { Login, SignUp, Home, AboutDriver, AboutDeparture, Settings } from "./pages/index";
 
 function App() {
   return (
@@ -11,6 +11,7 @@ function App() {
           <Route path='/home' element={<Home />}/>
           <Route path='/about/:id' element={<AboutDriver />}/>
           <Route path='/departure/:id' element={<AboutDeparture />}/>
+          <Route path='/settings' element={<Settings />}/>
         </Routes>
       </Router>
     </>
