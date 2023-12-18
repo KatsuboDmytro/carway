@@ -4,8 +4,8 @@ import './aboutDeparture.css';
 
 export const AboutDeparture = () => {
   const { state } = useLocation();
-  const from = state?.from || '', to = state?.to || '', name = state?.name || '';
-  const phone = state?.phone || '', email = state?.email || '', admin = state?.admin || false;
+  const name = state?.name || '', phone = state?.phone || '', email = state?.email || '', admin = state?.admin || false;
+  const route = state?.route || {};
 
   return (
     <>
@@ -20,34 +20,24 @@ export const AboutDeparture = () => {
         </div>
 
         <div className="driver__departure">
-          <span>{from} - {to}</span>
+          <span>{route.start_location} - {route.end_location}</span>
           <table border="1">
             <thead>
               <tr>
                 <th>Номер маршруту</th>
                 <th>Номер ТЗ</th>
+                <th>Дистанція</th>
                 <th>Вартість 1км</th>
                 <th>Обсяг палива</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>101</td>
-                <td>ВС1234</td>
-                <td>5 грн</td>
-                <td>20 л</td>
-              </tr>
-              <tr>
-                <td>202</td>
-                <td>ВС5678</td>
-                <td>7 грн</td>
-                <td>25 л</td>
-              </tr>
-              <tr>
-                <td>303</td>
-                <td>ВС91011</td>
-                <td>6 грн</td>
-                <td>18 л</td>
+                <td>{route?.route_number}</td>
+                <td>{route?.car_number}</td>
+                <td>{route?.distance_km} км</td>
+                <td>{route?.cost_per_km} грн</td>
+                <td>{route?.fuel_consumption} л</td>
               </tr>
             </tbody>
           </table>

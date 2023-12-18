@@ -1,0 +1,9 @@
+.free_admin {
+  width: 20px;
+  height: 20px;
+}
+
+.free {
+  display: flex;
+  justify-content: center;
+}

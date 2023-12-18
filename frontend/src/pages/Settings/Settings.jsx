@@ -1,7 +1,22 @@
-import React from 'react'
+import { useEffect, useState } from 'react'
+import axios from 'axios';
 import { Header } from '../../components'
+import './settings.css'
 
-export const Settings = () => {
+export const Settings = ({ driversData, routesData}) => {
+  const [vehiclesData, setVehiclesData] = useState([]);
+  console.log("🚀 ~ file: AboutDeparture.jsx:10 ~ AboutDeparture ~ vehiclesData:", vehiclesData)
+
+  useEffect(() => {
+    axios.get('http://localhost:3001/api/vehicles')
+      .then(response => {
+        setVehiclesData(response.data);
+      })
+      .catch(error => {
+        console.error('Error:', error.message);
+      });
+  }, []);
+
   return (
     <>
       <Header isUser={true} />
@@ -12,30 +27,28 @@ export const Settings = () => {
             <thead>
               <tr>
                 <th>Номер маршруту</th>
+                <th>Відкравлення</th>
+                <th>Прибуття</th>
                 <th>Номер ТЗ</th>
+                <th>Дистанція</th>
                 <th>Вартість 1км</th>
                 <th>Обсяг палива</th>
+                <th>Статус доставки</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>101</td>
-                <td>ВС1234</td>
-                <td>5 грн</td>
-                <td>20 л</td>
+            {routesData.map((route) => {
+                return <tr>
+                <td>{route?.route_number}</td>
+                <td>{route?.start_location}</td>
+                <td>{route?.end_location}</td>
+                <td>{route?.car_number}</td>
+                <td>{route?.distance_km}</td>
+                <td>{route?.cost_per_km}</td>
+                <td>{route?.fuel_consumption}</td>
+                <td className='free'>{<div style={{backgroundColor: route?.successful ? 'green' : 'red'}} className='free_admin'></div>}</td>
               </tr>
-              <tr>
-                <td>202</td>
-                <td>ВС5678</td>
-                <td>7 грн</td>
-                <td>25 л</td>
-              </tr>
-              <tr>
-                <td>303</td>
-                <td>ВС91011</td>
-                <td>6 грн</td>
-                <td>18 л</td>
-              </tr>
+              })}
             </tbody>
           </table>
         </div>
@@ -45,31 +58,23 @@ export const Settings = () => {
           <table border="1">
             <thead>
               <tr>
-                <th>Номер маршруту</th>
-                <th>Номер ТЗ</th>
-                <th>Вартість 1км</th>
-                <th>Обсяг палива</th>
+                <th>ПІБ</th>
+                <th>Номер телефону</th>
+                <th>Ел. пошта</th>
+                <th>Ліцензія</th>
+                <th>Статус роботи</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>101</td>
-                <td>ВС1234</td>
-                <td>5 грн</td>
-                <td>20 л</td>
+              {driversData.map((driver) => {
+                return <tr>
+                <td>{driver?.name}</td>
+                <td>{driver?.phone}</td>
+                <td>{driver?.email}</td>
+                <td>{driver?.license}</td>
+                <td className='free'>{<div style={{backgroundColor: driver?.isfree ? 'green' : 'red'}} className='free_admin'></div>}</td>
               </tr>
-              <tr>
-                <td>202</td>
-                <td>ВС5678</td>
-                <td>7 грн</td>
-                <td>25 л</td>
-              </tr>
-              <tr>
-                <td>303</td>
-                <td>ВС91011</td>
-                <td>6 грн</td>
-                <td>18 л</td>
-              </tr>
+              })}
             </tbody>
           </table>
         </div>
@@ -79,31 +84,36 @@ export const Settings = () => {
           <table border="1">
             <thead>
               <tr>
-                <th>Номер маршруту</th>
+                <th>Модель</th>
+                <th>Рік виробництва</th>
                 <th>Номер ТЗ</th>
-                <th>Вартість 1км</th>
-                <th>Обсяг палива</th>
+                <th>Пробіг ТЗ</th>
+                <th>Остання ТО</th>
+                <th>Статус ТЗ</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>101</td>
-                <td>ВС1234</td>
-                <td>5 грн</td>
-                <td>20 л</td>
+              {vehiclesData.map((vehicle) => {
+                return <tr>
+                <td>{vehicle?.model}</td>
+                <td>{vehicle?.prod_year}</td>
+                <td>{vehicle?.plate}</td>
+                <td>{vehicle?.mileage}</td>
+                <td>
+                  {vehicle?.last_maintenance && (
+                    <>
+                      {new Date(vehicle.last_maintenance)
+                        .toLocaleDateString('en-GB', {
+                          day: '2-digit',
+                          month: '2-digit',
+                          year: 'numeric',
+                        })}
+                    </>
+                  )}
+                </td>
+                <td className='free'>{<div style={{backgroundColor: vehicle?.status === 'active' ? 'green' : vehicle?.status === 'inactive' ? 'red' : 'orange'}} className='free_admin'></div>}</td>
               </tr>
-              <tr>
-                <td>202</td>
-                <td>ВС5678</td>
-                <td>7 грн</td>
-                <td>25 л</td>
-              </tr>
-              <tr>
-                <td>303</td>
-                <td>ВС91011</td>
-                <td>6 грн</td>
-                <td>18 л</td>
-              </tr>
+              })}
             </tbody>
           </table>
         </div>
