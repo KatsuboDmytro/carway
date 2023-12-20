@@ -11,7 +11,7 @@ export const AboutDriver = ({ routesData }) => {
 
   return (
     <>
-      <Header isUser={admin} routesData={routesData} />
+      <Header isUser={admin} />
       <section className='admin'>
         <div className="driver__info">
           <span>{name}</span>

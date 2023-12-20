@@ -3,11 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { No, Yes } from '../../assets/assets';
 import './task.css';
 
-export const Task = ({ id, name, phone, email, from, to, admin, proposition }) => {
+export const Task = ({ id, name, phone, email, route, from, to, admin, proposition }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/departure/${id}`, { state: { name, phone, email, from, to, admin } });
+    navigate(`/departure/${id}`, { state: { name, phone, email, route, from, to, admin } });
   };
 
   return (

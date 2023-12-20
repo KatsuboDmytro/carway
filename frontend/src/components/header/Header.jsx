@@ -4,19 +4,23 @@ import { Find } from '../index'
 import settings from "../../assets/header/settings.svg";
 import './header.css';
 
-export const Header = ({ isUser, driversData, routesData }) => {
+export const Header = ({ admin, driversData, routesData, driver }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/settings`, { state: { driversData, routesData } });
+    navigate(`/settings/${admin}`, { state: { admin, driversData, routesData, driver } });
+  };
+  
+  const logOutHandle = () => {
+    navigate(`/`);
   };
   return (
     <header className='header'>
       <Logo />
-      {isUser ? <Find /> : <></>}
+      {admin ? <Find /> : <></>}
       <div className='header__functions'>
-        {isUser ? <img src={settings} onClick={handleClick} alt="settings" /> : <></>}
-        <LogOut />
+        <img src={settings} onClick={handleClick} alt="settings" style={{cursor: 'pointer'}} />
+        <div onClick={logOutHandle}><LogOut /></div>
       </div>
     </header>
   )

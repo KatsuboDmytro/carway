@@ -33,11 +33,11 @@ export const AboutDeparture = () => {
             </thead>
             <tbody>
               <tr>
-                <td>{route?.route_number}</td>
-                <td>{route?.car_number}</td>
-                <td>{route?.distance_km} км</td>
-                <td>{route?.cost_per_km} грн</td>
-                <td>{route?.fuel_consumption} л</td>
+                <td>{route?.route_number ?? 'no info'}</td>
+                <td>{route?.car_number ?? 'no info'}</td>
+                <td>{route?.distance_km ?? 'no info'} км</td>
+                <td>{route?.cost_per_km ?? 'no info'} грн</td>
+                <td>{route?.fuel_consumption ?? 'no info'} л</td>
               </tr>
             </tbody>
           </table>

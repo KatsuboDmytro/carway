@@ -1,11 +1,43 @@
 import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Header } from '../../components'
 import './settings.css'
 
-export const Settings = ({ driversData, routesData}) => {
+export const Settings = ({ driversData, routesData }) => {
   const [vehiclesData, setVehiclesData] = useState([]);
-  console.log("🚀 ~ file: AboutDeparture.jsx:10 ~ AboutDeparture ~ vehiclesData:", vehiclesData)
+  const { register, handleSubmit, formState: { isValid } } = useForm();
+  const navigate = useNavigate();
+  const { state } = useLocation();
+  const driver = state?.driver || [];
+  console.log(driver);
+  const { admin } = useParams();
+  console.log("🚀 ~ file: Settings.jsx:9 ~ Settings ~ driver:", driver)
+
+  const random = (numb) => {
+    return Math.floor(Math.random() * numb) + 20;
+  }
+
+  const onSubmit = async (newData) => {
+    const data = {
+      id: driver?.driver_id || random(50),
+      isfree: driver?.isfree ?? true,
+      name: newData.name.slice(0, 20),
+      phone: newData.phone,
+      license: newData.licenseNumber.slice(0, 20),
+      email: driver?.email,
+      password: driver?.password,
+    };
+    console.log("🚀 ~ file: Settings.jsx:25 ~ onSubmit ~ data:", data)
+    try {
+      const response = await axios.put('http://localhost:3003/api/driver', data);
+      console.log(response.data);
+      navigate(`/home`, { state: { data: data, admin: false } });
+    } catch (error) {
+      console.error('Error sending request:', error);
+    }
+  };
 
   useEffect(() => {
     axios.get('http://localhost:3001/api/vehicles')
@@ -19,7 +51,8 @@ export const Settings = ({ driversData, routesData}) => {
 
   return (
     <>
-      <Header isUser={true} />
+      <Header />
+      {admin == 'true' ?
       <section className='admin'>
         <div className="driver__departure">
           <span>Усі маршрути</span>
@@ -118,6 +151,18 @@ export const Settings = ({ driversData, routesData}) => {
           </table>
         </div>
       </section>
+      :
+      <div className='user_details'>
+        <h2>Додай деталі про себе</h2>
+        <form onSubmit={handleSubmit(onSubmit)} className='inputs'>
+          <input {...register('name', { required: true })} type="text" placeholder='ПІБ' />
+          <input {...register('phone', { required: true })} type="text" placeholder='Номер телефону' />
+          <input {...register('licenseNumber', { required: true })} type="number" placeholder='Номер ліцензії' />
+          <input type="submit" value={'Підтвердити'} disabled={!isValid} />
+        </form>
+      </div>
+      }
+      
     </>
   )
 }

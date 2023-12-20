@@ -6,10 +6,10 @@ const app = express();
 const port = 3001;
 const dbConfig = {
   user: 'postgres',
-  host: '2.tcp.eu.ngrok.io',
+  host: '6.tcp.eu.ngrok.io',
   database: 'auto',
   password: 'postgres',
-  port: 13264,
+  port: 12692,
 };
 const corsOptions = {
   origin: 'http://localhost:3000',
@@ -63,7 +63,20 @@ app.use('/api/admin', cors(corsOptions), async (req, res) => {
   } finally {
     await client.end();
   }
+}).use('/api/suggested_routes', cors(corsOptions), async (req, res) => {
+  const client = new Client(dbConfig);
+  try {
+    await client.connect();
+    const result = await client.query('SELECT * FROM suggested_routes;');
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  } finally {
+    await client.end();
+  }
 });
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

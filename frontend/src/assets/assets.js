@@ -8,6 +8,6 @@ import no from "./no.svg";
 export const Logo = () => <img src={logo} alt="logo" />;
 export const FindIcon = () => <img src={find} alt="find" className="find__image" />;
 export const PrevPage = () => <img src={prevPage} alt="prevPage" />;
-export const LogOut = () => <img src={logOut} alt="logOut" />;
+export const LogOut = () => <img style={{cursor: 'pointer'}} src={logOut} alt="logOut" />;
 export const Yes = () => <img src={yes} alt="yes" />;
 export const No = () => <img src={no} alt="no" />;

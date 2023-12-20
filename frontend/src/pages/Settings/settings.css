@@ -7,3 +7,7 @@
   display: flex;
   justify-content: center;
 }
+
+.user_details {
+  margin: 0 100px;
+}

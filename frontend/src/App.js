@@ -1,7 +1,7 @@
-import { HashRouter as Router, Routes, Route } from 'react-router-dom';
-import { Login, SignUp, Home, AboutDriver, AboutDeparture, Settings } from "./pages/index";
 import { useEffect, useState } from 'react';
+import { HashRouter as Router, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
+import { Login, SignUp, Home, AboutDriver, AboutDeparture, Settings } from "./pages/index";
 
 function App() {
   const [driversData, setDriversData] = useState([]);
@@ -33,10 +33,10 @@ function App() {
         <Routes>
           <Route path='/' element={<Login />}/>
           <Route path='/signup' element={<SignUp />}/>
-          <Route path='/home' element={<Home driversData={driversData}/>}/>
+          <Route path='/home' element={<Home driversData={driversData} routesData={routesData}/>}/>
           <Route path='/about/:id' element={<AboutDriver routesData={routesData}/>}/>
           <Route path='/departure/:id' element={<AboutDeparture />}/>
-          <Route path='/settings' element={<Settings driversData={driversData} routesData={routesData}/>}/>
+          <Route path='/settings/:admin' element={<Settings driversData={driversData} routesData={routesData} />}/>
         </Routes>
       </Router>
     </>
