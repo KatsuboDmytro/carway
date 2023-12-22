@@ -1,6 +1,8 @@
 import { useLocation, useParams } from 'react-router-dom';
 import { Departure, Header } from '../../components'
 import './aboutDriver.css'
+import { useForm } from 'react-hook-form';
+import axios from 'axios';
 
 export const AboutDriver = ({ routesData }) => {
   const { state } = useLocation();
@@ -8,6 +10,21 @@ export const AboutDriver = ({ routesData }) => {
   console.log("🚀 ~ file: AboutDriver.jsx:10 ~ AboutDriver ~ userId:", id)
   const busy = state?.busy || false, name = state?.name || '';
   const phone = state?.phone || '', email = state?.email || '', admin = state?.admin || false;
+  const { handleSubmit, register, formState: { isValid } } = useForm();
+
+  const toSubmit = async (data) => {
+    const suggestRoute = {
+      driver_id: id,
+      ...data
+    };
+    console.log("🚀 ~ file: Settings.jsx:25 ~ onSubmit ~ data:", suggestRoute)
+    try {
+      const response = await axios.post('http://localhost:3005/api/suggested_routes', suggestRoute);
+      console.log(response.data);
+    } catch (error) {
+      console.error('Error sending request:', error);
+    }
+  };
 
   return (
     <>
@@ -25,7 +42,7 @@ export const AboutDriver = ({ routesData }) => {
           {routesData
           .filter((route) => route.driver_id === id && route.successful)
           .map((route) => {
-            return <Departure 
+            return <Departure
             admin={admin} 
             id={id} 
             name={name} 
@@ -37,7 +54,7 @@ export const AboutDriver = ({ routesData }) => {
             />
           })}
         </div>
-        { busy ?
+        { !busy ?
           <>
             <h2>Водій за кермом на маршруті</h2>
             <div className="admin__cards">
@@ -45,7 +62,6 @@ export const AboutDriver = ({ routesData }) => {
               .filter((route) => route.driver_id === id && !route.successful)
               .map((route) => (
                   <Departure
-                    key={route.id}
                     admin={admin}
                     id={id}
                     name={name}
@@ -62,11 +78,14 @@ export const AboutDriver = ({ routesData }) => {
           :
           <>
             <h2>Запропонувати роботу?</h2>
-            <form action="submit" className='inputs'>
-              <input type="text" placeholder='Звідки?' required=""/>
-              <input type="text" placeholder='Куди?' required=""/>
-              <input type="text" placeholder='Вартість палив на 1км' required=""/>
-              <input type="button" value={'Підвердити'} disabled/>
+            <form onSubmit={handleSubmit(toSubmit)} className='inputs'>
+              <input {...register('start_location', { required: true })} type="text" placeholder='Звідки?' />
+              <input {...register('end_location', { required: true })} type="text" placeholder='Куди?' />
+              <input {...register('route_number', { required: true })} type="text" placeholder='Route number' />
+              <input {...register('distance_km', { required: true })} type="number" placeholder='Дистанція' />
+              <input {...register('cost_per_km', { required: true })} type="number" placeholder='Вартість палива на 1км' />
+              <input {...register('car_number', { required: true })} type="text" placeholder='Номер ТЗ' />
+              <input style={{cursor: 'pointer'}} type="submit" value={'Підтвердити'} disabled={!isValid} />
             </form>
           </>
         }

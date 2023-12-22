@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 
 const app = express();
 
-const port = 3003;
+const port = 3006;
 
 app.use(cors());
 
@@ -21,40 +21,17 @@ const dbConfig = {
 };
 
 app.put('/api/driver', async (req, res) => {
-  const { email, password, name, phone, license, id, isfree } = req.body;
+  const { driver_id } = req.body;
   const client = new Client(dbConfig);
 
   try {
     await client.connect();
-    const result = await client.query(
-      `UPDATE driver 
-        SET name = $3, 
-            license = $4, 
-            phone = $5,
-            driver_id = $6, 
-            isfree = $7 
-        WHERE email = $1 
-            AND password = $2;
-      `,
-      [email, password, name, license, phone, id, isfree]
-    );
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Error executing query:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  } finally {
-    await client.end();
-  }
-}).put('/api/routes', async (req, res) => {
-  const { route_number } = req.body;
-  const client = new Client(dbConfig);
 
-  try {
-    await client.connect();
     const result = await client.query(
-      `UPDATE routes SET successful = true WHERE route_number = $1;`,
-      [route_number]
+      `UPDATE driver SET isfree = true WHERE driver_id = $1;`,
+      [ driver_id ]
     );
+
     res.json(result.rows);
   } catch (error) {
     console.error('Error executing query:', error);

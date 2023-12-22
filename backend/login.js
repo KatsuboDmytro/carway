@@ -14,10 +14,10 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 const dbConfig = {
   user: 'postgres',
-  host: '6.tcp.eu.ngrok.io',
+  host: '2.tcp.eu.ngrok.io',
   database: 'auto',
   password: 'postgres',
-  port: 12692,
+  port: 14459,
 };
 
 app.put('/api/driver', async (req, res) => {

@@ -1,12 +1,10 @@
-import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { Header } from '../../components'
 import './settings.css'
 
-export const Settings = ({ driversData, routesData }) => {
-  const [vehiclesData, setVehiclesData] = useState([]);
+export const Settings = ({ driversData, routesData,vehiclesData }) => {
   const { register, handleSubmit, formState: { isValid } } = useForm();
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -21,11 +19,11 @@ export const Settings = ({ driversData, routesData }) => {
 
   const onSubmit = async (newData) => {
     const data = {
-      id: driver?.driver_id || random(50),
+      id: driver?.driver_id || random(1000),
       isfree: driver?.isfree ?? true,
-      name: newData.name.slice(0, 20),
+      name: newData.name,
       phone: newData.phone,
-      license: newData.licenseNumber.slice(0, 20),
+      license: newData.licenseNumber,
       email: driver?.email,
       password: driver?.password,
     };
@@ -39,23 +37,13 @@ export const Settings = ({ driversData, routesData }) => {
     }
   };
 
-  useEffect(() => {
-    axios.get('http://localhost:3001/api/vehicles')
-      .then(response => {
-        setVehiclesData(response.data);
-      })
-      .catch(error => {
-        console.error('Error:', error.message);
-      });
-  }, []);
-
   return (
     <>
       <Header />
       {admin == 'true' ?
       <section className='admin'>
         <div className="driver__departure">
-          <span>Усі маршрути</span>
+          <span>Успішні маршрути</span>
           <table border="1">
             <thead>
               <tr>
@@ -70,7 +58,43 @@ export const Settings = ({ driversData, routesData }) => {
               </tr>
             </thead>
             <tbody>
-            {routesData.map((route) => {
+            {routesData
+            .filter((route) => route?.successful)
+            .map((route) => {
+                return <tr>
+                <td>{route?.route_number}</td>
+                <td>{route?.start_location}</td>
+                <td>{route?.end_location}</td>
+                <td>{route?.car_number}</td>
+                <td>{route?.distance_km}</td>
+                <td>{route?.cost_per_km}</td>
+                <td>{route?.fuel_consumption}</td>
+                <td className='free'>{<div style={{backgroundColor: route?.successful ? 'green' : 'red'}} className='free_admin'></div>}</td>
+              </tr>
+              })}
+            </tbody>
+          </table>
+        </div>
+
+        <div className="driver__departure">
+          <span>Відхилені маршрути</span>
+          <table border="1">
+            <thead>
+              <tr>
+                <th>Номер маршруту</th>
+                <th>Відкравлення</th>
+                <th>Прибуття</th>
+                <th>Номер ТЗ</th>
+                <th>Дистанція</th>
+                <th>Вартість 1км</th>
+                <th>Обсяг палива</th>
+                <th>Статус доставки</th>
+              </tr>
+            </thead>
+            <tbody>
+            {routesData
+            .filter((route) => !route?.successful)
+            .map((route) => {
                 return <tr>
                 <td>{route?.route_number}</td>
                 <td>{route?.start_location}</td>

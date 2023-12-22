@@ -6,10 +6,10 @@ const app = express();
 const port = 3001;
 const dbConfig = {
   user: 'postgres',
-  host: '6.tcp.eu.ngrok.io',
+  host: '2.tcp.eu.ngrok.io',
   database: 'auto',
   password: 'postgres',
-  port: 12692,
+  port: 14459,
 };
 const corsOptions = {
   origin: 'http://localhost:3000',

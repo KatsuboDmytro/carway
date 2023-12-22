@@ -2,10 +2,13 @@ import { useLocation } from 'react-router-dom';
 import { Header } from '../../components';
 import './aboutDeparture.css';
 
-export const AboutDeparture = () => {
+export const AboutDeparture = ({ vehiclesData }) => {
   const { state } = useLocation();
   const name = state?.name || '', phone = state?.phone || '', email = state?.email || '', admin = state?.admin || false;
-  const route = state?.route || {};
+  const route = state?.route || {}, from = state?.from || {}, to = state?.to || {};
+
+  const myVehicle = vehiclesData.filter((vehicle) => vehicle?.plate === route?.car_number)
+  console.log("🚀 ~ file: AboutDeparture.jsx:11 ~ AboutDeparture ~ myVehicle:", myVehicle, route)
 
   return (
     <>
@@ -20,7 +23,7 @@ export const AboutDeparture = () => {
         </div>
 
         <div className="driver__departure">
-          <span>{route.start_location} - {route.end_location}</span>
+          <span>{from} - {to}</span>
           <table border="1">
             <thead>
               <tr>
@@ -34,10 +37,10 @@ export const AboutDeparture = () => {
             <tbody>
               <tr>
                 <td>{route?.route_number ?? 'no info'}</td>
-                <td>{route?.car_number ?? 'no info'}</td>
+                <td>{myVehicle[0]?.plate ?? 'no info'}</td>
                 <td>{route?.distance_km ?? 'no info'} км</td>
                 <td>{route?.cost_per_km ?? 'no info'} грн</td>
-                <td>{route?.fuel_consumption ?? 'no info'} л</td>
+                <td>{myVehicle[0]?.fuel_consumption ?? 'no info'} л</td>
               </tr>
             </tbody>
           </table>
