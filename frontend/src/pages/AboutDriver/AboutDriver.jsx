@@ -12,6 +12,8 @@ export const AboutDriver = ({ routesData }) => {
   const phone = state?.phone || '', email = state?.email || '', admin = state?.admin || false;
   const { handleSubmit, register, formState: { isValid } } = useForm();
 
+  const successLength = routesData.filter((route) => +route.driver_id === +id && route.successful);
+
   const toSubmit = async (data) => {
     const suggestRoute = {
       driver_id: id,
@@ -37,11 +39,9 @@ export const AboutDriver = ({ routesData }) => {
             <div>{email}</div>
           </aside>
         </div>
-        <h2>Успішні перевізки</h2>
+        <h2>Успішні перевізки : {successLength.length}</h2>
         <div className="admin__cards">
-          {routesData
-          .filter((route) => route.driver_id === id && route.successful)
-          .map((route) => {
+          {successLength.map((route) => {
             return <Departure
             admin={admin} 
             id={id} 

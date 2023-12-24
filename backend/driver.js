@@ -17,7 +17,7 @@ const dbConfig = {
   host: '2.tcp.eu.ngrok.io',
   database: 'auto',
   password: 'postgres',
-  port: 14459,
+  port: 17018,
 };
 
 app.put('/api/driver', async (req, res) => {

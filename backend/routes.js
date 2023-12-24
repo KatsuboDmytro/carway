@@ -17,7 +17,7 @@ const dbConfig = {
   host: '2.tcp.eu.ngrok.io',
   database: 'auto',
   password: 'postgres',
-  port: 14459,
+  port: 17018,
 };
 
 app.delete('/api/suggested_routes', async (req, res) => {
@@ -55,45 +55,47 @@ app.delete('/api/suggested_routes', async (req, res) => {
   } finally {
     await client.end();
   }
-}).put('/api/routes', async (req, res) => {
-  const {
-    route_number,
-    car_number,
-    end_location,
-    start_location,
-    driver_id,
-    distance_km,
-    fuel_consumption,
-    cost_per_km
-  } = req.body;
+})
+// .put('/api/routes', async (req, res) => {
+//   const {
+//     route_number,
+//     car_number,
+//     end_location,
+//     start_location,
+//     driver_id,
+//     distance_km,
+//     fuel_consumption,
+//     cost_per_km
+//   } = req.body;
 
-  const client = new Client(dbConfig);
+//   const client = new Client(dbConfig);
 
-  try {
-    await client.connect();
-    const result = await client.query(
-      `INSERT INTO routes (route_number, car_number, end_location, start_location, driver_id, distance_km, fuel_consumption, cost_per_km) 
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`,
-      [
-        route_number,
-        car_number,
-        end_location,
-        start_location,
-        driver_id,
-        distance_km,
-        fuel_consumption,
-        cost_per_km
-      ]
-    );
+//   try {
+//     await client.connect();
+//     const result = await client.query(
+//       `INSERT INTO routes (route_number, car_number, end_location, start_location, driver_id, distance_km, fuel_consumption, cost_per_km) 
+//       VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`,
+//       [
+//         route_number,
+//         car_number,
+//         end_location,
+//         start_location,
+//         driver_id,
+//         distance_km,
+//         fuel_consumption,
+//         cost_per_km
+//       ]
+//     );
 
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Error executing query:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  } finally {
-    await client.end();
-  }
-}).put('/api/driver', async (req, res) => {
+//     res.json(result.rows);
+//   } catch (error) {
+//     console.error('Error executing query:', error);
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   } finally {
+//     await client.end();
+//   }
+// })
+.put('/api/driver', async (req, res) => {
   const { driver_id, isfree } = req.body;
   const client = new Client(dbConfig);
 

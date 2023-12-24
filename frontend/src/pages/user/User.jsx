@@ -22,7 +22,7 @@ export const User = ({ driver, admin }) => {
   }, [flag]);
   
   useEffect(() => {
-    axios.get('http://localhost:3001/api/routes')
+    axios.get('http://localhost:3007/api/routes')
       .then(response => {
         setRoutesData(response.data);
       })
@@ -81,8 +81,7 @@ export const User = ({ driver, admin }) => {
 
         <h2>Запропоновані перевезення</h2>
         <div className="admin__cards">
-          {driver?.isfree ?
-            suggestedRoutes
+          {suggestedRoutes
             .filter((route) => +route?.driver_id === +driver?.driver_id)
             .map((route) => {
               return (
@@ -103,7 +102,6 @@ export const User = ({ driver, admin }) => {
                 setFlag={setFlag} 
               />)
             })
-            : <span>У вас ще нема запропонованих перевезень</span>
           }
           </div>
       </section>

@@ -19,7 +19,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    axios.get('http://localhost:3001/api/routes')
+    axios.get('http://localhost:3007/api/routes')
       .then(response => {
         setRoutesData(response.data);
       })
