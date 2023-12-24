@@ -45,25 +45,7 @@ app.put('/api/driver', async (req, res) => {
   } finally {
     await client.end();
   }
-})
-// .put('/api/routes', async (req, res) => {
-//   const { route_number } = req.body;
-//   const client = new Client(dbConfig);
-
-//   try {
-//     await client.connect();
-//     const result = await client.query(
-//       `UPDATE routes SET successful = true WHERE route_number = $1;`,
-//       [route_number]
-//     );
-//     res.json(result.rows);
-//   } catch (error) {
-//     console.error('Error executing query:', error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   } finally {
-//     await client.end();
-//   }
-// });
+});
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

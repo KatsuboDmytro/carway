@@ -15,70 +15,36 @@ const corsOptions = {
   origin: 'http://localhost:3000',
 };
 
+const queryDatabase = async (tableName, res) => {
+  const client = new Client(dbConfig);
+
+  try {
+    await client.connect();
+    const result = await client.query(`SELECT * FROM ${tableName}`);
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  } finally {
+    await client.end();
+  }
+};
+
 app.use('/api/admin', cors(corsOptions), async (req, res) => {
-  const client = new Client(dbConfig);
-  try {
-    await client.connect();
-    const result = await client.query('SELECT * FROM admin');
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Error executing query:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  } finally {
-    await client.end();
-  }
-}).use('/api/driver', cors(corsOptions), async (req, res) => {
-  const client = new Client(dbConfig);
-  try {
-    await client.connect();
-    const result = await client.query('SELECT * FROM driver');
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Error executing query:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  } finally {
-    await client.end();
-  }
-})
-// .use('/api/routes', cors(corsOptions), async (req, res) => {
-//   const client = new Client(dbConfig);
-//   try {
-//     await client.connect();
-//     const result = await client.query('SELECT * FROM routes');
-//     res.json(result.rows);
-//   } catch (error) {
-//     console.error('Error executing query:', error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   } finally {
-//     await client.end();
-//   }
-// })
-.use('/api/vehicles', cors(corsOptions), async (req, res) => {
-  const client = new Client(dbConfig);
-  try {
-    await client.connect();
-    const result = await client.query('SELECT * FROM vehicles');
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Error executing query:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  } finally {
-    await client.end();
-  }
-}).use('/api/suggested_routes', cors(corsOptions), async (req, res) => {
-  const client = new Client(dbConfig);
-  try {
-    await client.connect();
-    const result = await client.query('SELECT * FROM suggested_routes;');
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Error executing query:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  } finally {
-    await client.end();
-  }
+  await queryDatabase('admin', res);
 });
 
+app.use('/api/driver', cors(corsOptions), async (req, res) => {
+  await queryDatabase('driver', res);
+});
+
+app.use('/api/vehicles', cors(corsOptions), async (req, res) => {
+  await queryDatabase('vehicles', res);
+});
+
+app.use('/api/suggested_routes', cors(corsOptions), async (req, res) => {
+  await queryDatabase('suggested_routes', res);
+});
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

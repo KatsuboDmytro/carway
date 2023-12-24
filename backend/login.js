@@ -8,7 +8,6 @@ const app = express();
 const port = 3002;
 
 app.use(cors());
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -20,16 +19,12 @@ const dbConfig = {
   port: 17018,
 };
 
-app.put('/api/driver', async (req, res) => {
-  const { email, password } = req.body;
+const queryDatabase = async (query, values, res) => {
   const client = new Client(dbConfig);
 
   try {
     await client.connect();
-    const result = await client.query(
-      `SELECT * FROM driver WHERE email = $1 AND password = $2`,
-      [email, password]
-    );
+    const result = await client.query(query, values);
     res.json(result.rows);
   } catch (error) {
     console.error('Error executing query:', error);
@@ -37,6 +32,14 @@ app.put('/api/driver', async (req, res) => {
   } finally {
     await client.end();
   }
+};
+
+app.put('/api/driver', async (req, res) => {
+  const { email, password } = req.body;
+  const query = 'SELECT * FROM driver WHERE email = $1 AND password = $2';
+  const values = [email, password];
+
+  await queryDatabase(query, values, res);
 });
 
 app.listen(port, () => {

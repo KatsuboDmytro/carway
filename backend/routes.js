@@ -4,11 +4,9 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 
 const app = express();
-
 const port = 3005;
 
 app.use(cors());
-
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -20,100 +18,50 @@ const dbConfig = {
   port: 17018,
 };
 
+const queryDatabase = async (query, values, res) => {
+  const client = new Client(dbConfig);
+
+  try {
+    await client.connect();
+    const result = await client.query(query, values);
+    return result.rows;
+  } catch (error) {
+    console.error('Error executing query:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  } finally {
+    await client.end();
+  }
+};
+
 app.delete('/api/suggested_routes', async (req, res) => {
   const { suggest_id } = req.body;
-  const client = new Client(dbConfig);
+  const query = 'DELETE FROM suggested_routes WHERE suggest_id = $1 RETURNING *';
+  const values = [suggest_id];
 
-  try {
-    await client.connect();
-    const result = await client.query(
-      `DELETE FROM suggested_routes WHERE suggest_id = $1`,
-      [suggest_id]
-    );
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Error executing query:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  } finally {
-    await client.end();
-  }
-}).post('/api/suggested_routes', async (req, res) => {
+  const result = await queryDatabase(query, values, res);
+  res.json(result[0]);
+});
+
+app.post('/api/suggested_routes', async (req, res) => {
   const { route_number, end_location, start_location, distance_km, cost_per_km, driver_id, car_number } = req.body;
-  const client = new Client(dbConfig);
+  const query = `
+    INSERT INTO suggested_routes (route_number, end_location, start_location, distance_km, cost_per_km, driver_id, car_number)
+    VALUES ($1, $2, $3, $4, $5, $6, $7)
+    RETURNING *;
+  `;
+  const values = [route_number, end_location, start_location, distance_km, cost_per_km, driver_id, car_number];
 
-  try {
-    await client.connect();
-    const result = await client.query(
-      `INSERT INTO suggested_routes (route_number, end_location, start_location, distance_km, cost_per_km, driver_id, car_number)                                                            
-      VALUES ($1, $2, $3, $4, $5, $6, $7);`,
-      [route_number, end_location, start_location, distance_km, cost_per_km, driver_id, car_number]
-    );
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Error executing query:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  } finally {
-    await client.end();
-  }
-})
-// .put('/api/routes', async (req, res) => {
-//   const {
-//     route_number,
-//     car_number,
-//     end_location,
-//     start_location,
-//     driver_id,
-//     distance_km,
-//     fuel_consumption,
-//     cost_per_km
-//   } = req.body;
+  const result = await queryDatabase(query, values, res);
+  res.json(result[0]);
+});
 
-//   const client = new Client(dbConfig);
+app.put('/api/driver', async (req, res) => {
+  const { driver_id } = req.body;
+  const query = 'UPDATE driver SET isfree = $1 WHERE driver_id = $2 RETURNING *';
+  const values = [false, driver_id];
 
-//   try {
-//     await client.connect();
-//     const result = await client.query(
-//       `INSERT INTO routes (route_number, car_number, end_location, start_location, driver_id, distance_km, fuel_consumption, cost_per_km) 
-//       VALUES ($1, $2, $3, $4, $5, $6, $7, $8);`,
-//       [
-//         route_number,
-//         car_number,
-//         end_location,
-//         start_location,
-//         driver_id,
-//         distance_km,
-//         fuel_consumption,
-//         cost_per_km
-//       ]
-//     );
-
-//     res.json(result.rows);
-//   } catch (error) {
-//     console.error('Error executing query:', error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   } finally {
-//     await client.end();
-//   }
-// })
-.put('/api/driver', async (req, res) => {
-  const { driver_id, isfree } = req.body;
-  const client = new Client(dbConfig);
-
-  try {
-    await client.connect();
-
-    const result = await client.query(
-      `UPDATE driver SET isfree = false WHERE driver_id = $1;`,
-      [ driver_id ]
-    );
-
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Error executing query:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
-  } finally {
-    await client.end();
-  }
+  const result = await queryDatabase(query, values, res);
+  res.json(result[0]);
 });
 
 app.listen(port, () => {
