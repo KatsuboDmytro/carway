@@ -8,7 +8,6 @@ export const AboutDeparture = ({ vehiclesData }) => {
   const route = state?.route || {}, from = state?.from || {}, to = state?.to || {};
 
   const myVehicle = vehiclesData.filter((vehicle) => vehicle?.plate === route?.car_number)
-  console.log("🚀 ~ file: AboutDeparture.jsx:11 ~ AboutDeparture ~ myVehicle:", myVehicle, route)
 
   return (
     <>

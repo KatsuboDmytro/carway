@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Admin, User } from '../index';
 import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import { Admin, User } from '../index';
 
 export const Home = ({ driversData, routesData }) => {
   const { state } = useLocation();

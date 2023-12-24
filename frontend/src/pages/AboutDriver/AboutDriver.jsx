@@ -7,7 +7,6 @@ import axios from 'axios';
 export const AboutDriver = ({ routesData }) => {
   const { state } = useLocation();
   const { id } = useParams();
-  console.log("🚀 ~ file: AboutDriver.jsx:10 ~ AboutDriver ~ userId:", id)
   const busy = state?.busy || false, name = state?.name || '';
   const phone = state?.phone || '', email = state?.email || '', admin = state?.admin || false;
   const { handleSubmit, register, formState: { isValid } } = useForm();
@@ -19,7 +18,7 @@ export const AboutDriver = ({ routesData }) => {
       driver_id: id,
       ...data
     };
-    console.log("🚀 ~ file: Settings.jsx:25 ~ onSubmit ~ data:", suggestRoute)
+
     try {
       const response = await axios.post('http://localhost:3005/api/suggested_routes', suggestRoute);
       console.log(response.data);

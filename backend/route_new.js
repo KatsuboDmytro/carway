@@ -41,7 +41,7 @@ app.put('/api/routes/:route_number', cors(corsOptions), async (req, res) => {
 
   try {
     const result = await couchdbDatabase.insert(data);
-    res.status(200).json({ message: 'Route updated successfully' });
+    result.status(200).json({ message: 'Route updated successfully' });
   } catch (error) {
     handleCouchDBError(res, error, 'Error updating route:', 'Cannot update route');
   }

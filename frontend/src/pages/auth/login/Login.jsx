@@ -15,7 +15,6 @@ export const Login = () => {
             try {
               const response = await axios.put('http://localhost:3002/api/driver', data);
               console.log(response.data);
-            //   const driver = response.data;
               navigate(`/home`, { state: { data, admin: false } });
             } catch (error) {
               console.error('Error sending request:', error);
